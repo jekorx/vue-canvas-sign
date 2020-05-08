@@ -1,16 +1,19 @@
 <template>
-  <canvas
-    ref="canvas"
-    :width="width > borderWidth * 2 ? width - borderWidth * 2 : width"
-    :height="height"
-    :style="borderStyle"
-    @touchstart="touchstart"
-    @mousedown="mousedown"
-    @touchmove="touchmove"
-    @mousemove="mousemove"
-    @touchend="touchend"
-    @mouseup="mouseup"
-  ></canvas>
+  <div>
+    <canvas
+      ref="canvas"
+      :width="width > borderWidth * 2 ? width - borderWidth * 2 : width"
+      :height="height"
+      :style="borderStyle"
+      @touchstart="touchstart"
+      @mousedown="mousedown"
+      @touchmove="touchmove"
+      @mousemove="mousemove"
+      @touchend="touchend"
+      @mouseup="mouseup"
+    ></canvas>
+    <slot :save="save" :clear="clear"></slot>
+  </div>
 </template>
 <script>
 export default {
