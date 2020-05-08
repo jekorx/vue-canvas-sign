@@ -1,8 +1,7 @@
 .DS_Store
 build
 dist
-screenshot/*.png
-screenshot/*.jpg
+screenshot
 src
 node_modules/
 npm-debug.log*

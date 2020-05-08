@@ -1,5 +1,5 @@
 # vue-canvas-sign
-[![npm package](screenshot/version.svg)](https://www.npmjs.com/package/vue-canvas-sign)
+[![npm package](https://img.shields.io/npm/v/vue-canvas-sign.svg)](https://www.npmjs.com/package/vue-canvas-sign)
 > vue canvas签名组件（vue canvas sign component）  
 ### 示例
 > [demo展示](https://jekorx.github.io/vue-canvas-sign)
