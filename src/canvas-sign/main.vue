@@ -53,6 +53,22 @@ export default {
     borderColor: {
       type: String,
       default: '#333'
+    },
+    // 图片类型，默认：image/png，可选：image/jpeg（注意修改background），image/webp（Chrome支持），其他类型均为image/png
+    imageType: {
+      type: String,
+      default: 'image/png',
+      validator (value) {
+        return ['image/png', 'image/jpeg', 'image/webp'].indexOf(value) !== -1
+      }
+    },
+    // 图片质量，当imageType为image/jpeg时生效，默认值：0.92，可选0~1之间，超出范围使用默认0.92
+    imageQual: {
+      type: Number,
+      default: 0.92,
+      validator (value) {
+        return value <= 1 && value >= 0
+      }
     }
   },
   computed: {
@@ -78,7 +94,12 @@ export default {
   methods: {
     // 生成图片
     save (callback) {
-      const imgBase64 = this.canvas.toDataURL()
+      let imgBase64
+      if (this.imageType === 'image/jpeg') {
+        imgBase64 = this.canvas.toDataURL('image/jpeg', this.imageQual)
+      } else {
+        imgBase64 = this.canvas.toDataURL(this.imageType)
+      }
       callback(imgBase64)
     },
     // 清空画布

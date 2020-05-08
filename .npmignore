@@ -2,6 +2,7 @@
 build
 dist
 screenshot/*.png
+screenshot/*.jpg
 src
 node_modules/
 npm-debug.log*

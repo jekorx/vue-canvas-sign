@@ -18,7 +18,7 @@ npm i vue-canvas-sign -S
 <template>
   <div>
     <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" />
+    <CanvasSign ref="canvasSign" imageType="image/jpeg" :imageQual="0.01" background="#FFF" />
     <div>
       <button @click="save">save</button>
       <button @click="clear">clear</button>
@@ -73,15 +73,17 @@ export default {
 </script>
 ```
 ### 组件参数
-| 参数          | 说明       | 类型    |  默认值 |
-| :------------ | :--------  | :------ | :----- |
-| width         | 画布宽     | Number  | document.documentElement.clientWidth &vert;&vert; document.body.clientWidth |
-| height        | 画布高     | Number  | 200 |
-| lineWidth     | 画线粗细   | Number  | 2 |
-| color         | 画线颜色   | String  | '#000' |
-| background    | 画布背景色 | String  | 'rgba(255, 255, 255, 0)' |
-| borderWidth   | 边框宽度   | Number  | 1 |
-| borderColor   | 边框颜色   | String  | '#333' |
+| 参数          | 说明       | 类型    |  默认值 |  可选值 |
+| :------------ | :--------  | :------ | :----- | :----- |
+| width         | 画布宽     | Number  | ```document.documentElement.clientWidth || document.body.clientWidth``` | |
+| height        | 画布高     | Number  | ```200``` | |
+| lineWidth     | 画线粗细   | Number  | ```2``` | |
+| color         | 画线颜色   | String  | ```#000``` | |
+| background    | 画布背景色 | String  | ```rgba(255, 255, 255, 0)``` | |
+| borderWidth   | 边框宽度   | Number  | ```1``` | |
+| borderColor   | 边框颜色   | String  | ```#333``` | |
+| imageType     | 生成图片类型，使用```image/jpeg```类型，注意修改```background``` | String  | ```image/png``` | ```image/png``` &#124; ```image/jpeg``` &#124; ```image/webp```(Chrome支持) |
+| imageQual     | 生成图片质量，imageType为```image/jpeg```时生效 | Number  | ```0.92``` | ```0 ~ 1``` 之间数字 |
 ### slot
 | 属性   | 说明        | 类型      |  参数 |
 | :----- | :---------- | :------- | :----- |

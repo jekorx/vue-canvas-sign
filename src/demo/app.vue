@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" />
+    <CanvasSign ref="canvasSign" imageType="image/jpeg" :imageQual="0.01" background="#FFF" />
     <div>
       <button @click="save">save</button>
       <button @click="clear">clear</button>
