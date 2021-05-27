@@ -86,7 +86,7 @@ export default {
 ### 组件参数
 | 参数          | 说明       | 类型    |  默认值 |  可选值 |
 | :------------ | :--------  | :------ | :----- | :----- |
-| width         | 画布宽     | Number  | ```document.documentElement.clientWidth || document.body.clientWidth``` | |
+| width         | 画布宽     | Number  | document宽度 | |
 | height        | 画布高     | Number  | ```200``` | |
 | lineWidth     | 画线粗细   | Number  | ```2``` | |
 | color         | 画线颜色   | String  | ```#000``` | |
