@@ -4,3 +4,7 @@
 
 * 增加输出图片类型参数 ```imageType```（```image/png``` &#124; ```image/jpeg``` &#124; ```image/webp```(Chrome支持)）
 * 增加输出图片质量参数 ```imageType```为```image/jpeg```时生效
+
+#### 1.0.2 (2021-5-27)
+
+* 优化canvas边距获取方式，方式在某些特殊情况下边距获取错误的问题

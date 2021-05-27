@@ -109,10 +109,11 @@ export default {
     // 初始化
     init () {
       const canvas = this.$refs.canvas
+      const { top, left } = canvas.getBoundingClientRect()
       this.canvas = canvas
 
-      this.offsetTop = canvas.offsetTop // canvas上边距
-      this.offsetLeft = canvas.offsetLeft // canvas左边距
+      this.offsetTop = top // canvas上边距
+      this.offsetLeft = left // canvas左边距
 
       // 获取canvas context
       const cxt = canvas.getContext('2d')
