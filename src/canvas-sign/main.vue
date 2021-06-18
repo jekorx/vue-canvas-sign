@@ -15,8 +15,22 @@
     <slot :save="save" :clear="clear"></slot>
   </div>
 </template>
-<script>
-export default {
+<script lang="ts">
+import { computed, defineComponent, onMounted, ref } from 'vue'
+
+interface ICanvasSignProps {
+  readonly width: number
+  readonly height: number
+  readonly lineWidth: number
+  readonly color: string
+  readonly background: string
+  readonly borderWidth: number
+  readonly borderColor: string
+  readonly imageType: string
+  readonly imageQual: number
+}
+
+export default defineComponent({
   name: 'CanvasSign',
   props: {
     // 画布宽
@@ -58,121 +72,145 @@ export default {
     imageType: {
       type: String,
       default: 'image/png',
-      validator (value) {
-        return ['image/png', 'image/jpeg', 'image/webp'].indexOf(value) !== -1
+      validator (value: string) {
+        return ['image/png', 'image/jpeg', 'image/webp'].includes(value)
       }
     },
     // 图片质量，当imageType为image/jpeg时生效，默认值：0.92，可选0~1之间，超出范围使用默认0.92
     imageQual: {
       type: Number,
       default: 0.92,
-      validator (value) {
+      validator (value: number) {
         return value <= 1 && value >= 0
       }
     }
   },
-  computed: {
-    borderStyle () {
-      if (this.borderWidth > 0 && this.width > this.borderWidth * 2) {
-        return `border: ${this.borderWidth}px solid ${this.borderColor}`
+  setup (props: ICanvasSignProps) {
+    const canvas = ref<HTMLCanvasElement>()
+    const cxt = ref<CanvasRenderingContext2D>()
+    const isDraw = ref(false)
+
+    const borderStyle = computed(() => {
+      if (props.borderWidth > 0 && props.width > props.borderWidth * 2) {
+        return `border: ${props.borderWidth}px solid ${props.borderColor}`
       }
       return ''
-    }
-  },
-  data () {
-    return {
-      canvas: null,
-      cxt: null,
-      offsetTop: 0,
-      offsetLeft: 0,
-      isDraw: false
-    }
-  },
-  mounted () {
-    this.$nextTick(this.init)
-  },
-  methods: {
+    })
+
     // 生成图片
-    save (callback) {
+    const save = (callback: (imgBase64?: string) => void) => {
+      if (!canvas.value) {
+        callback()
+        return
+      }
       let imgBase64
-      if (this.imageType === 'image/jpeg') {
-        imgBase64 = this.canvas.toDataURL('image/jpeg', this.imageQual)
+      if (props.imageType === 'image/jpeg') {
+        imgBase64 = canvas.value.toDataURL('image/jpeg', props.imageQual)
       } else {
-        imgBase64 = this.canvas.toDataURL(this.imageType)
+        imgBase64 = canvas.value.toDataURL(props.imageType)
       }
       callback(imgBase64)
-    },
+    }
     // 清空画布
-    clear () {
-      this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    },
+    const clear = () => {
+      const { width, height } = canvas.value || {}
+      cxt.value?.clearRect(0, 0, width || 0, height || 0)
+    }
     // 初始化
-    init () {
-      const canvas = this.$refs.canvas
-      const { top, left } = canvas.getBoundingClientRect()
-      this.canvas = canvas
-
-      this.offsetTop = top // canvas上边距
-      this.offsetLeft = left // canvas左边距
-
+    const init = () => {
       // 获取canvas context
-      const cxt = canvas.getContext('2d')
+      const context = canvas.value?.getContext('2d')
 
-      // canvas context相关设置
-      cxt.fillStyle = this.background
-      cxt.fillRect(0, 0, this.width, this.height)
-      cxt.strokeStyle = this.color
-      cxt.lineWidth = this.lineWidth
-      cxt.lineCap = 'round' // 线条末端添加圆形线帽，减少线条的生硬感
-      cxt.lineJoin = 'round' // 线条交汇时为原型边角
-      // 利用阴影，消除锯齿
-      cxt.shadowBlur = 1
-      cxt.shadowColor = this.color
+      if (context) {
+        const { background, width, height, color, lineWidth } = props
+        // canvas context相关设置
+        context.fillStyle = background
+        context.fillRect(0, 0, width, height)
+        context.strokeStyle = color
+        context.lineWidth = lineWidth
+        context.lineCap = 'round' // 线条末端添加圆形线帽，减少线条的生硬感
+        context.lineJoin = 'round' // 线条交汇时为原型边角
+        // 利用阴影，消除锯齿
+        context.shadowBlur = 1
+        context.shadowColor = color
 
-      this.cxt = cxt
-    },
+        cxt.value = context
+      }
+    }
     // 移动端触摸摁下
-    touchstart (e) {
-      this.cxt.beginPath()
-      this.cxt.moveTo(e.changedTouches[0].pageX - this.offsetLeft, e.changedTouches[0].pageY - this.offsetTop)
-    },
+    const touchstart = (e: TouchEvent) => {
+      const { pageX, pageY, target } = e.changedTouches[0]
+      const { tagName, offsetTop, offsetLeft } = target as HTMLCanvasElement
+      if (tagName === 'CANVAS') {
+        cxt.value?.beginPath()
+        cxt.value?.moveTo(pageX - offsetLeft, pageY - offsetTop)
+      }
+    }
     // pc端鼠标点下
-    mousedown (e) {
-      this.isDraw = true
-      this.cxt.beginPath()
-      this.cxt.moveTo(e.pageX - this.offsetLeft, e.pageY - this.offsetTop)
-    },
+    const mousedown = (e: MouseEvent) => {
+      const { tagName, offsetTop, offsetLeft } = e.target as HTMLCanvasElement
+      if (tagName === 'CANVAS') {
+        isDraw.value = true
+        cxt.value?.beginPath()
+        cxt.value?.moveTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+      }
+    }
     // 移动端触摸滑动
-    touchmove (e) {
+    const touchmove = (e: TouchEvent) => {
       e.stopPropagation()
       e.preventDefault()
-      this.cxt.lineTo(e.changedTouches[0].pageX - this.offsetLeft, e.changedTouches[0].pageY - this.offsetTop)
-      this.cxt.stroke()
-    },
+      if (!cxt.value) {
+        return
+      }
+      const { pageX, pageY, target } = e.changedTouches[0]
+      const { tagName, offsetTop, offsetLeft } = target as HTMLCanvasElement
+      if (tagName === 'CANVAS') {
+        cxt.value.lineTo(pageX - offsetLeft, pageY - offsetTop)
+        cxt.value.stroke()
+      }
+    }
     // pc端鼠标移动
-    mousemove (e) {
+    const mousemove = (e: MouseEvent) => {
       e.stopPropagation()
       e.preventDefault()
-      if (this.isDraw) {
-        this.cxt.lineTo(e.pageX - this.offsetLeft, e.pageY - this.offsetTop)
-        this.cxt.stroke()
-        if (e.pageX - this.offsetLeft <= this.borderWidth ||
-            e.pageX - this.offsetLeft >= this.canvas.width - this.borderWidth * 2 ||
-            e.pageY - this.offsetTop <= this.borderWidth ||
-            e.pageY - this.offsetTop >= this.canvas.height - this.borderWidth * 2) {
-          this.isDraw = false
+      if (isDraw.value && canvas.value && cxt.value) {
+        const { tagName, offsetTop, offsetLeft } = e.target as HTMLCanvasElement
+        if (tagName === 'CANVAS') {
+          const { width, height } = canvas.value
+          cxt.value.lineTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+          cxt.value.stroke()
+          if (e.pageX - offsetLeft <= props.borderWidth ||
+              e.pageX - offsetLeft >= (width || 0) - props.borderWidth * 2 ||
+              e.pageY - offsetTop <= props.borderWidth ||
+              e.pageY - offsetTop >= (height || 0) - props.borderWidth * 2) {
+            isDraw.value = false
+          }
         }
       }
-    },
+    }
     // 移动端触摸抬起
-    touchend () {
-      this.cxt.closePath()
-    },
+    const touchend = () => {
+      cxt.value?.closePath()
+    }
     // pc端鼠标松开
-    mouseup () {
-      this.isDraw = false
-      this.cxt.closePath()
+    const mouseup = () => {
+      isDraw.value = false
+      cxt.value?.closePath()
+    }
+    onMounted(init)
+
+    return {
+      canvas,
+      borderStyle,
+      save,
+      clear,
+      touchstart,
+      mousedown,
+      touchmove,
+      mousemove,
+      touchend,
+      mouseup
     }
   }
-}
+})
 </script>
