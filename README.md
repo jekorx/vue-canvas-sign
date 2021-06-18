@@ -1,8 +1,14 @@
 # vue-canvas-sign
 [![npm package](https://img.shields.io/npm/v/vue-canvas-sign.svg)](https://www.npmjs.com/package/vue-canvas-sign)
-> vue canvas签名组件（vue canvas sign component）  
+
+> ❗ vue canvas签名组件（vue canvas sign component），```2.x```版本为```vue@3.x```组件  
+
+> ❗ 如需在```vue@2.x```中使用，请使用 [![vue-img-viewr@1.0.4](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.4-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.4)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)  
+> ```yarn add vue-canvas-sign@^1.0.4```  
+> ```npm i vue-canvas-sign@^1.0.4 -S```  
+
 ### 示例
-> [demo展示](https://jekorx.github.io/vue-canvas-sign)
+> [demo展示](https://jekorx.github.io/vue-canvas-sign)  
 
 ![vue-canvas-sign](screenshot/pic0.jpg)
 
@@ -18,7 +24,7 @@ npm i vue-canvas-sign -S
 <template>
   <div>
     <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" imageType="image/jpeg" :imageQual="0.01" background="#FFF" />
+    <CanvasSign ref="canvasSign" :imageQual="0.01" background="#FFF" />
     <div>
       <button @click="saveHandle">save</button>
       <button @click="clearHandle">clear</button>
@@ -26,13 +32,7 @@ npm i vue-canvas-sign -S
     <hr />
     <!-- 使用方法二 -->
     <CanvasSign>
-      <!-- vue@2.6.0 版本及以上，才能使用 v-slot -->
-      <!-- <template v-slot="{ save, clear }">
-        <button @click="() => save(saveCallback)">save</button>
-        <button @click="() => clearWithSlotHandle(clear)">clear</button>
-      </template> -->
-      <!-- vue@2.6.0 版本以下，使用 slot-scope -->
-      <template slot-scope="{ save, clear }">
+      <template v-slot="{ save, clear }">
         <button @click="() => save(saveCallback)">save</button>
         <button @click="() => clearWithSlotHandle(clear)">clear</button>
       </template>
@@ -42,45 +42,48 @@ npm i vue-canvas-sign -S
     <img :src="imgSrc" alt="生成的图片" />
   </div>
 </template>
-<script>
-import CanvasSign from 'vue-canvas-sign'
+<script lang="ts">
+import { defineComponent, ref } from 'vue'
+import CanvasSign, { ICanvasSign } from './canvas-sign'
 
 const blankimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
-export default {
+export default defineComponent({
   components: { CanvasSign },
-  data () {
-    return {
-      // 图片src，默认空白base64图片
-      imgSrc: blankimg
-    }
-  },
-  methods: {
+  setup () {
+    const imgSrc = ref(blankimg)
+    const canvasSign = ref<ICanvasSign>()
+
     // slot中save方法回调
-    saveCallback (imgBase64) {
-      this.imgSrc = imgBase64
-    },
+    const saveCallback = (imgBase64?: string) => {
+      imgSrc.value = imgBase64 || blankimg
+    }
     // 不使用slot的save方法
-    saveHandle () {
-      this.$refs.canvasSign.save(img => {
-        this.imgSrc = img
+    const saveHandle = () => {
+      canvasSign.value?.save(img => {
+        imgSrc.value = img || blankimg
       })
-    },
+    }
     // 不使用slot的clear方法
-    clearHandle () {
-      // 清空图片
-      this.$refs.canvasSign.clear()
-      // 清空画布
-      this.imgSrc = blankimg
-    },
+    const clearHandle = () => {
+      canvasSign.value?.clear() // 清空图片
+      imgSrc.value = blankimg // 清空画布
+    }
     // 使用slot的clear方法
-    clearWithSlotHandle (clear) {
-      // 清空画布
-      clear && clear()
-      // 清空图片
-      this.imgSrc = blankimg
+    const clearWithSlotHandle = (clear: () => void) => {
+      clear && clear() // 清空画布
+      imgSrc.value = blankimg // 清空图片
+    }
+
+    return {
+      canvasSign,
+      imgSrc,
+      saveCallback,
+      saveHandle,
+      clearHandle,
+      clearWithSlotHandle
     }
   }
-}
+})
 </script>
 ```
 ### 组件参数
@@ -98,5 +101,5 @@ export default {
 ### slot
 | 属性   | 说明        | 类型      |  参数 |
 | :----- | :---------- | :------- | :----- |
-| save   | 保存图片方法 | Function | callback(imgBase64) |
+| save   | 保存图片方法，需判断imgBase64是否为空 | Function | callback(imgBase64?: string) |
 | clear  | 清空画布方法 | Function | 无 |

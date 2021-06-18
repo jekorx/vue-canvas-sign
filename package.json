@@ -4,8 +4,7 @@
   "description": "vue canvas签名组件（vue canvas sign component），with vue@3.x",
   "author": "jekorx",
   "files": [
-    "lib",
-    "types"
+    "lib"
   ],
   "main": "./lib/vue-canvas-sign.umd.js",
   "module": "./lib/vue-canvas-sign.es.js",
