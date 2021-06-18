@@ -9,7 +9,6 @@
   ],
   "main": "./lib/vue-canvas-sign.umd.js",
   "module": "./lib/vue-canvas-sign.es.js",
-  "typings": "./types/index.d.ts",
   "exports": {
     ".": {
       "import": "./lib/vue-canvas-sign.es.js",
