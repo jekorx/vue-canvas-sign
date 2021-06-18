@@ -18,7 +18,7 @@ npm i vue-canvas-sign -S
 <template>
   <div>
     <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" imageType="image/jpeg" :imageQual="0.01" background="#FFF" />
+    <CanvasSign ref="canvasSign" :imageQual="0.01" background="#FFF" />
     <div>
       <button @click="saveHandle">save</button>
       <button @click="clearHandle">clear</button>

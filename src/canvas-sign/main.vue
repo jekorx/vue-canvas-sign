@@ -83,8 +83,6 @@ export default {
     return {
       canvas: null,
       cxt: null,
-      offsetTop: 0,
-      offsetLeft: 0,
       isDraw: false
     }
   },
@@ -109,11 +107,7 @@ export default {
     // 初始化
     init () {
       const canvas = this.$refs.canvas
-      const { top, left } = canvas.getBoundingClientRect()
       this.canvas = canvas
-
-      this.offsetTop = top // canvas上边距
-      this.offsetLeft = left // canvas左边距
 
       // 获取canvas context
       const cxt = canvas.getContext('2d')
@@ -133,34 +127,50 @@ export default {
     },
     // 移动端触摸摁下
     touchstart (e) {
-      this.cxt.beginPath()
-      this.cxt.moveTo(e.changedTouches[0].pageX - this.offsetLeft, e.changedTouches[0].pageY - this.offsetTop)
+      const { pageX, pageY, target } = e.changedTouches[0]
+      const { tagName, offsetTop, offsetLeft } = target
+      if (tagName === 'CANVAS') {
+        this.cxt.beginPath()
+        this.cxt.moveTo(pageX - offsetLeft, pageY - offsetTop)
+      }
     },
     // pc端鼠标点下
     mousedown (e) {
-      this.isDraw = true
-      this.cxt.beginPath()
-      this.cxt.moveTo(e.pageX - this.offsetLeft, e.pageY - this.offsetTop)
+      const { tagName, offsetTop, offsetLeft } = e.target
+      if (tagName === 'CANVAS') {
+        this.isDraw = true
+        this.cxt.beginPath()
+        this.cxt.moveTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+      }
     },
     // 移动端触摸滑动
     touchmove (e) {
       e.stopPropagation()
       e.preventDefault()
-      this.cxt.lineTo(e.changedTouches[0].pageX - this.offsetLeft, e.changedTouches[0].pageY - this.offsetTop)
-      this.cxt.stroke()
+      const { pageX, pageY, target } = e.changedTouches[0]
+      const { tagName, offsetTop, offsetLeft } = target
+      if (tagName === 'CANVAS') {
+        this.cxt.lineTo(pageX - offsetLeft, pageY - offsetTop)
+        this.cxt.stroke()
+      }
     },
     // pc端鼠标移动
     mousemove (e) {
       e.stopPropagation()
       e.preventDefault()
       if (this.isDraw) {
-        this.cxt.lineTo(e.pageX - this.offsetLeft, e.pageY - this.offsetTop)
-        this.cxt.stroke()
-        if (e.pageX - this.offsetLeft <= this.borderWidth ||
-            e.pageX - this.offsetLeft >= this.canvas.width - this.borderWidth * 2 ||
-            e.pageY - this.offsetTop <= this.borderWidth ||
-            e.pageY - this.offsetTop >= this.canvas.height - this.borderWidth * 2) {
-          this.isDraw = false
+        const { tagName, offsetTop, offsetLeft } = e.target
+        if (tagName === 'CANVAS') {
+          const { borderWidth, cxt } = this
+          const { width, height } = this.canvas
+          cxt.lineTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+          cxt.stroke()
+          if (e.pageX - offsetLeft <= borderWidth ||
+              e.pageX - offsetLeft >= width - borderWidth * 2 ||
+              e.pageY - offsetTop <= borderWidth ||
+              e.pageY - offsetTop >= height - borderWidth * 2) {
+            this.isDraw = false
+          }
         }
       }
     },
