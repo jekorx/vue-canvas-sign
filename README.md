@@ -90,6 +90,15 @@ export default defineComponent({
   }
 })
 </script>
+
+/** 
+ * 注册全局组件
+ */
+import CanvasSign from 'vue-canvas-sign'
+
+app.component('CanvasSign', CanvasSign)
+// or
+//app.use(CanvasSign)
 ```
 
 ### 组件参数
