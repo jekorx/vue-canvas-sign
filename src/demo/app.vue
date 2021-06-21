@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative; left: 10px; top: 50px">
     <!-- 使用方法一 -->
     <CanvasSign ref="canvasSign" imageType="image/jpeg" :imageQual="0.01" background="#FFF" />
     <div>

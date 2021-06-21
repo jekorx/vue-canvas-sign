@@ -127,30 +127,30 @@ export default {
     },
     // 移动端触摸摁下
     touchstart (e) {
-      const { pageX, pageY, target } = e.changedTouches[0]
-      const { tagName, offsetTop, offsetLeft } = target
-      if (tagName === 'CANVAS') {
+      const { clientX, clientY, target } = e.changedTouches[0]
+      if (target.tagName === 'CANVAS') {
+        const { left, top } = this.canvas.getBoundingClientRect()
         this.cxt.beginPath()
-        this.cxt.moveTo(pageX - offsetLeft, pageY - offsetTop)
+        this.cxt.moveTo(clientX - left, clientY - top)
       }
     },
     // pc端鼠标点下
     mousedown (e) {
-      const { tagName, offsetTop, offsetLeft } = e.target
-      if (tagName === 'CANVAS') {
+      if (e.target.tagName === 'CANVAS') {
+        const { left, top } = this.canvas.getBoundingClientRect()
         this.isDraw = true
         this.cxt.beginPath()
-        this.cxt.moveTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+        this.cxt.moveTo(e.clientX - left, e.clientY - top)
       }
     },
     // 移动端触摸滑动
     touchmove (e) {
       e.stopPropagation()
       e.preventDefault()
-      const { pageX, pageY, target } = e.changedTouches[0]
-      const { tagName, offsetTop, offsetLeft } = target
-      if (tagName === 'CANVAS') {
-        this.cxt.lineTo(pageX - offsetLeft, pageY - offsetTop)
+      const { clientX, clientY, target } = e.changedTouches[0]
+      if (target.tagName === 'CANVAS') {
+        const { left, top } = this.canvas.getBoundingClientRect()
+        this.cxt.lineTo(clientX - left, clientY - top)
         this.cxt.stroke()
       }
     },
@@ -159,16 +159,16 @@ export default {
       e.stopPropagation()
       e.preventDefault()
       if (this.isDraw) {
-        const { tagName, offsetTop, offsetLeft } = e.target
-        if (tagName === 'CANVAS') {
+        if (e.target.tagName === 'CANVAS') {
           const { borderWidth, cxt } = this
           const { width, height } = this.canvas
-          cxt.lineTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+          const { left, top } = this.canvas.getBoundingClientRect()
+          cxt.lineTo(e.clientX - left, e.clientY - top)
           cxt.stroke()
-          if (e.pageX - offsetLeft <= borderWidth ||
-              e.pageX - offsetLeft >= width - borderWidth * 2 ||
-              e.pageY - offsetTop <= borderWidth ||
-              e.pageY - offsetTop >= height - borderWidth * 2) {
+          if (e.clientX - left <= borderWidth ||
+              e.clientX - left >= width - borderWidth * 2 ||
+              e.clientY - top <= borderWidth ||
+              e.clientY - top >= height - borderWidth * 2) {
             this.isDraw = false
           }
         }
