@@ -140,8 +140,7 @@ export default defineComponent({
     // 移动端触摸摁下
     const touchstart = (e: TouchEvent) => {
       const { clientX, clientY, target } = e.changedTouches[0]
-      const { tagName } = target as HTMLCanvasElement
-      if (tagName === 'CANVAS') {
+      if ((target as HTMLCanvasElement).tagName === 'CANVAS') {
         const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
         cxt.value?.beginPath()
         cxt.value?.moveTo(clientX - left, clientY - top)
@@ -149,8 +148,7 @@ export default defineComponent({
     }
     // pc端鼠标点下
     const mousedown = (e: MouseEvent) => {
-      const { tagName } = e.target as HTMLCanvasElement
-      if (tagName === 'CANVAS') {
+      if ((e.target as HTMLCanvasElement).tagName === 'CANVAS') {
         const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
         isDraw.value = true
         cxt.value?.beginPath()
@@ -161,12 +159,9 @@ export default defineComponent({
     const touchmove = (e: TouchEvent) => {
       e.stopPropagation()
       e.preventDefault()
-      if (!cxt.value) {
-        return
-      }
+      if (!cxt.value) return
       const { clientX, clientY, target } = e.changedTouches[0]
-      const { tagName } = target as HTMLCanvasElement
-      if (tagName === 'CANVAS') {
+      if ((target as HTMLCanvasElement).tagName === 'CANVAS') {
         const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
         cxt.value.lineTo(clientX - left, clientY - top)
         cxt.value.stroke()
@@ -177,8 +172,7 @@ export default defineComponent({
       e.stopPropagation()
       e.preventDefault()
       if (isDraw.value && canvas.value && cxt.value) {
-        const { tagName } = e.target as HTMLCanvasElement
-        if (tagName === 'CANVAS') {
+        if ((e.target as HTMLCanvasElement).tagName === 'CANVAS') {
           const { width, height } = canvas.value
           const { left, top } = canvas.value.getBoundingClientRect() || { left: 0, top: 0 }
           cxt.value.lineTo(e.clientX - left, e.clientY - top)
