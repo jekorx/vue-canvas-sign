@@ -1,5 +1,9 @@
 # 更新日志
 
+#### 2.0.2 (2021-06-21)
+
+* 修复publish后types缺失的问题
+
 #### 2.0.1 (2021-06-21)
 
 * add install function with plugin
