@@ -139,20 +139,22 @@ export default defineComponent({
     }
     // 移动端触摸摁下
     const touchstart = (e: TouchEvent) => {
-      const { pageX, pageY, target } = e.changedTouches[0]
-      const { tagName, offsetTop, offsetLeft } = target as HTMLCanvasElement
+      const { clientX, clientY, target } = e.changedTouches[0]
+      const { tagName } = target as HTMLCanvasElement
       if (tagName === 'CANVAS') {
+        const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
         cxt.value?.beginPath()
-        cxt.value?.moveTo(pageX - offsetLeft, pageY - offsetTop)
+        cxt.value?.moveTo(clientX - left, clientY - top)
       }
     }
     // pc端鼠标点下
     const mousedown = (e: MouseEvent) => {
-      const { tagName, offsetTop, offsetLeft } = e.target as HTMLCanvasElement
+      const { tagName } = e.target as HTMLCanvasElement
       if (tagName === 'CANVAS') {
+        const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
         isDraw.value = true
         cxt.value?.beginPath()
-        cxt.value?.moveTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+        cxt.value?.moveTo(e.clientX - left, e.clientY - top)
       }
     }
     // 移动端触摸滑动
@@ -162,10 +164,11 @@ export default defineComponent({
       if (!cxt.value) {
         return
       }
-      const { pageX, pageY, target } = e.changedTouches[0]
-      const { tagName, offsetTop, offsetLeft } = target as HTMLCanvasElement
+      const { clientX, clientY, target } = e.changedTouches[0]
+      const { tagName } = target as HTMLCanvasElement
       if (tagName === 'CANVAS') {
-        cxt.value.lineTo(pageX - offsetLeft, pageY - offsetTop)
+        const { left, top } = canvas.value?.getBoundingClientRect() || { left: 0, top: 0 }
+        cxt.value.lineTo(clientX - left, clientY - top)
         cxt.value.stroke()
       }
     }
@@ -174,15 +177,16 @@ export default defineComponent({
       e.stopPropagation()
       e.preventDefault()
       if (isDraw.value && canvas.value && cxt.value) {
-        const { tagName, offsetTop, offsetLeft } = e.target as HTMLCanvasElement
+        const { tagName } = e.target as HTMLCanvasElement
         if (tagName === 'CANVAS') {
           const { width, height } = canvas.value
-          cxt.value.lineTo(e.pageX - offsetLeft, e.pageY - offsetTop)
+          const { left, top } = canvas.value.getBoundingClientRect() || { left: 0, top: 0 }
+          cxt.value.lineTo(e.clientX - left, e.clientY - top)
           cxt.value.stroke()
-          if (e.pageX - offsetLeft <= props.borderWidth ||
-              e.pageX - offsetLeft >= (width || 0) - props.borderWidth * 2 ||
-              e.pageY - offsetTop <= props.borderWidth ||
-              e.pageY - offsetTop >= (height || 0) - props.borderWidth * 2) {
+          if (e.clientX - left <= props.borderWidth ||
+              e.clientX - left >= (width || 0) - props.borderWidth * 2 ||
+              e.clientY - top <= props.borderWidth ||
+              e.clientY - top >= (height || 0) - props.borderWidth * 2) {
             isDraw.value = false
           }
         }

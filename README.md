@@ -27,25 +27,23 @@ npm i vue-canvas-sign -S
 
 ```javascript
 <template>
+  <!-- 使用方法一 -->
+  <CanvasSign ref="canvasSign" :imageQual="0.01" background="#FFF" />
   <div>
-    <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" :imageQual="0.01" background="#FFF" />
-    <div>
-      <button @click="saveHandle">save</button>
-      <button @click="clearHandle">clear</button>
-    </div>
-    <hr />
-    <!-- 使用方法二 -->
-    <CanvasSign>
-      <template v-slot="{ save, clear }">
-        <button @click="() => save(saveCallback)">save</button>
-        <button @click="() => clearWithSlotHandle(clear)">clear</button>
-      </template>
-    </CanvasSign>
-    <hr />
-    <!-- 生成图片展示 -->
-    <img :src="imgSrc" alt="生成的图片" />
+    <button @click="saveHandle">save</button>
+    <button @click="clearHandle">clear</button>
   </div>
+  <hr />
+  <!-- 使用方法二 -->
+  <CanvasSign>
+    <template v-slot="{ save, clear }">
+      <button @click="() => save(saveCallback)">save</button>
+      <button @click="() => clearWithSlotHandle(clear)">clear</button>
+    </template>
+  </CanvasSign>
+  <hr />
+  <!-- 生成图片展示 -->
+  <img :src="imgSrc" alt="生成的图片" />
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
