@@ -19,14 +19,14 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import CanvasSign, { ICanvasSign } from './canvas-sign'
+import CanvasSign from './canvas-sign'
 
 const blankimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
 export default defineComponent({
   components: { CanvasSign },
   setup () {
     const imgSrc = ref(blankimg)
-    const canvasSign = ref<ICanvasSign>()
+    const canvasSign = ref<typeof CanvasSign>()
 
     // slot中save方法回调
     const saveCallback = (imgBase64?: string) => {
@@ -34,7 +34,7 @@ export default defineComponent({
     }
     // 不使用slot的save方法
     const saveHandle = () => {
-      canvasSign.value?.save(img => {
+      canvasSign.value?.save((img?: string) => {
         imgSrc.value = img || blankimg
       })
     }

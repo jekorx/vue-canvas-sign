@@ -1,6 +1,6 @@
 {
   "name": "vue-canvas-sign",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "vue canvas签名组件（vue canvas sign component），with vue@3.x",
   "author": "jekorx",
   "files": [
@@ -21,6 +21,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && eslint src --ext .ts,.js,.tsx,.jsx,.vue && vite build",
     "build:show": "vue-tsc --noEmit && eslint src --ext .ts,.js,.tsx,.jsx,.vue && vite build -c vite.config.show.ts",
+    "build:all": "vue-tsc --noEmit && eslint src --ext .ts,.js,.tsx,.jsx,.vue && vite build && vite build -c vite.config.show.ts",
     "serve": "vite preview"
   },
   "peerDependencies": {

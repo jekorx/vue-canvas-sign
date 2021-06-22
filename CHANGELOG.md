@@ -1,5 +1,10 @@
 # 更新日志
 
+#### 2.0.6 (2021-06-22)
+
+* index.d.ts
+* remove ICanvasSign in package
+
 #### 2.0.5 (2021-06-21)
 
 * 修复画布存在于position的dom中时，导致轨迹偏移计算错误的问题

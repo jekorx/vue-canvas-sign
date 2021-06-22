@@ -55,6 +55,8 @@ export default defineComponent({
   setup () {
     const imgSrc = ref(blankimg)
     const canvasSign = ref<ICanvasSign>()
+    // or
+    // const canvasSign = ref<typeof CanvasSign>()
 
     // slot中save方法回调
     const saveCallback = (imgBase64?: string) => {
