@@ -23,7 +23,7 @@
 * 修复在某些布局情况下，绘制轨迹偏移计算错误的问题
 * 升级为vue@3.x版本
 * 基于vite@2.x开发
-* vue@2.x版本请使用 [![vue-img-viewr@1.0.5](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.5-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.5)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)
+* vue@2.x版本请使用 [![vue-canvas-sign@1.0.5](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.5-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.5)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)
 
 #### 1.0.5 (2021-06-21)
 
