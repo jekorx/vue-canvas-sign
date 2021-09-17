@@ -1,6 +1,6 @@
 {
   "name": "vue-canvas-sign",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "vue canvas签名组件（vue canvas sign component），with vue@3.x",
   "author": "jekorx",
   "files": [

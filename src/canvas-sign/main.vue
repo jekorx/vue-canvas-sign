@@ -23,7 +23,7 @@ interface ICanvasSignProps {
   readonly height: number
   readonly lineWidth: number
   readonly color: string
-  readonly background: string
+  readonly backgroundColor: string
   readonly borderWidth: number
   readonly borderColor: string
   readonly imageType: string
@@ -54,7 +54,7 @@ export default defineComponent({
       default: '#000'
     },
     // 画布背景色
-    background: {
+    backgroundColor: {
       type: String,
       default: 'rgba(255, 255, 255, 0)'
     },
@@ -113,8 +113,13 @@ export default defineComponent({
     }
     // 清空画布
     const clear = () => {
+      const { backgroundColor } = props
       const { width, height } = canvas.value || {}
-      cxt.value?.clearRect(0, 0, width || 0, height || 0)
+      if (cxt.value) {
+        cxt.value.clearRect(0, 0, width || 0, height || 0)
+        cxt.value.fillStyle = backgroundColor
+        cxt.value.fillRect(0, 0, width || 0, height || 0)
+      }
     }
     // 初始化
     const init = () => {
@@ -122,9 +127,9 @@ export default defineComponent({
       const context = canvas.value?.getContext('2d')
 
       if (context) {
-        const { background, width, height, color, lineWidth } = props
+        const { backgroundColor, width, height, color, lineWidth } = props
         // canvas context相关设置
-        context.fillStyle = background
+        context.fillStyle = backgroundColor
         context.fillRect(0, 0, width, height)
         context.strokeStyle = color
         context.lineWidth = lineWidth

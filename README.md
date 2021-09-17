@@ -109,7 +109,7 @@ app.component('CanvasSign', CanvasSign)
 | height        | 画布高     | Number  | ```200``` | |
 | lineWidth     | 画线粗细   | Number  | ```2``` | |
 | color         | 画线颜色   | String  | ```#000``` | |
-| background    | 画布背景色 | String  | ```rgba(255, 255, 255, 0)``` | |
+| backgroundColor | 画布背景色 | String  | ```rgba(255, 255, 255, 0)``` | |
 | borderWidth   | 边框宽度   | Number  | ```1``` | |
 | borderColor   | 边框颜色   | String  | ```#333``` | |
 | imageType     | 生成图片类型，使用```image/jpeg```类型，注意修改```background```，清空画布再次绘制可能无法正常生成base64，所以不推荐使用使用```image/jpeg```类型 | String  | ```image/png```（👍推荐🔥） | ```image/png``` &#124; ```image/jpeg``` &#124; ```image/webp```(Chrome支持) |
