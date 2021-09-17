@@ -40,7 +40,7 @@ export default {
       default: '#000'
     },
     // 画布背景色
-    background: {
+    backgroundColor: {
       type: String,
       default: 'rgba(255, 255, 255, 0)'
     },
@@ -54,7 +54,7 @@ export default {
       type: String,
       default: '#333'
     },
-    // 图片类型，默认：image/png，可选：image/jpeg（注意修改background），image/webp（Chrome支持），其他类型均为image/png
+    // 图片类型，默认：image/png，可选：image/jpeg（注意修改backgroundColor），image/webp（Chrome支持），其他类型均为image/png
     imageType: {
       type: String,
       default: 'image/png',
@@ -103,6 +103,8 @@ export default {
     // 清空画布
     clear () {
       this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      this.cxt.fillStyle = this.backgroundColor
+      this.cxt.fillRect(0, 0, this.width, this.height)
     },
     // 初始化
     init () {
@@ -113,7 +115,7 @@ export default {
       const cxt = canvas.getContext('2d')
 
       // canvas context相关设置
-      cxt.fillStyle = this.background
+      cxt.fillStyle = this.backgroundColor
       cxt.fillRect(0, 0, this.width, this.height)
       cxt.strokeStyle = this.color
       cxt.lineWidth = this.lineWidth
