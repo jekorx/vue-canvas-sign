@@ -68,7 +68,7 @@ export default defineComponent({
       type: String,
       default: '#333'
     },
-    // 图片类型，默认：image/png，可选：image/jpeg（注意修改background），image/webp（Chrome支持），其他类型均为image/png
+    // 图片类型，默认：image/png，可选：image/jpeg（注意修改backgroundColor），image/webp（Chrome支持），其他类型均为image/png
     imageType: {
       type: String,
       default: 'image/png',

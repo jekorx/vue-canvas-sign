@@ -1,6 +1,6 @@
 <template>
   <!-- 使用方法一 -->
-  <CanvasSign ref="canvasSign" imageType="image/png" :imageQual="0.01" background-color="#CCC" />
+  <CanvasSign ref="canvasSign" imageType="image/png" :imageQual="0.01" background-color="#EEE" />
   <div>
     <button @click="saveHandle">save</button>
     <button @click="clearHandle">clear</button>

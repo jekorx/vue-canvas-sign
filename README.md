@@ -4,9 +4,9 @@
 
 > ❗ vue canvas签名组件（vue canvas sign component），```2.x```版本为```vue@3.x```组件  
 
-> ❗ 如需在```vue@2.x```中使用，请使用 [![vue-canvas-sign@1.0.5](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.5-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.5)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)  
-> ```yarn add vue-canvas-sign@^1.0.5```  
-> ```npm i vue-canvas-sign@^1.0.5 -S```  
+> ❗ 如需在```vue@2.x```中使用，请使用 [![vue-canvas-sign@1.0.6](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.6-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.6)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)  
+> ```yarn add vue-canvas-sign@^1.0.6```  
+> ```npm i vue-canvas-sign@^1.0.6 -S```  
 
 ### 示例
 
@@ -28,7 +28,7 @@ npm i vue-canvas-sign -S
 ```javascript
 <template>
   <!-- 使用方法一 -->
-  <CanvasSign ref="canvasSign" :imageQual="0.01" background="#FFF" />
+  <CanvasSign ref="canvasSign" :imageQual="0.01" background-color="#EEE" />
   <div>
     <button @click="saveHandle">save</button>
     <button @click="clearHandle">clear</button>

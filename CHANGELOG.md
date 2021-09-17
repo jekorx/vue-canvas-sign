@@ -1,9 +1,9 @@
 # 更新日志
 
-#### 2.0.6 (2021-09-17)
+#### 2.0.7 (2021-09-17)
 
-* &#x2757;&#x2757; 原```background```属性改为```backgroundColor```
-* 修复clear后无法重置画布背景的问题
+* &#x2757;&#x2757; 原```background```改为```backgroundColor```
+* 修复清空画布后不能重置背景的问题
 
 #### 2.0.6 (2021-06-22)
 
@@ -29,6 +29,11 @@
 * 升级为vue@3.x版本
 * 基于vite@2.x开发
 * vue@2.x版本请使用 [![vue-canvas-sign@1.0.5](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.5-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.5)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)
+
+#### 1.0.6 (2021-09-17)
+
+* &#x2757;&#x2757; 原```background```改为```backgroundColor```
+* 修复清空画布后不能重置背景的问题
 
 #### 1.0.5 (2021-06-21)
 
