@@ -35,7 +35,7 @@ npm i vue-canvas-sign -S
   </div>
   <hr />
   <!-- 使用方法二 -->
-  <CanvasSign :height="400" :width="width" :line-width="lineWidth">
+  <CanvasSign ref="canvasSign2" :height="400" :width="width" :line-width="lineWidth">
     <template v-slot="{ save, clear }">
       <button @click="() => save(saveCallback)">save</button>
       <button @click="() => clearWithSlotHandle(clear)">clear</button>
@@ -55,6 +55,7 @@ export default defineComponent({
   setup () {
     const imgSrc = ref(blankimg)
     const canvasSign = ref<ICanvasSign>()
+    const canvasSign2 = ref<typeof CanvasSign>()
     // or
     // const canvasSign = ref<typeof CanvasSign>()
 
@@ -86,6 +87,7 @@ export default defineComponent({
         lineWidth.value = w / 100
         // 组件参数改变后，通过reset方法使属性生效
         canvasSign.value?.reset()
+        canvasSign2.value?.reset()
       }
     })
 
@@ -93,6 +95,7 @@ export default defineComponent({
       width,
       lineWidth,
       canvasSign,
+      canvasSign2,
       imgSrc,
       saveCallback,
       saveHandle,
@@ -133,4 +136,4 @@ app.component('CanvasSign', CanvasSign)
 | :----- | :---------- | :------- | :----- |
 | save   | 保存图片方法，需判断imgBase64是否为空 | Function | callback(imgBase64?: string) |
 | clear  | 清空画布方法 | Function | 无 |
-| reset  | 组件参数改变后，通过reset方法使属性生效 | Function | 无 |
+| reset  | 组件参数改变后，通过reset方法使属性生效（reset方法会清空画布） | Function | 无 |

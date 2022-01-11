@@ -7,7 +7,7 @@
   </div>
   <hr />
   <!-- 使用方法二 -->
-  <CanvasSign :height="400" :width="width" :line-width="lineWidth">
+  <CanvasSign ref="canvasSign2" :height="400" :width="width" :line-width="lineWidth">
     <template v-slot="{ save, clear }">
       <button @click="() => save(saveCallback)">save</button>
       <button @click="() => clearWithSlotHandle(clear)">clear</button>
@@ -27,6 +27,7 @@ export default defineComponent({
   setup () {
     const imgSrc = ref(blankimg)
     const canvasSign = ref<typeof CanvasSign>()
+    const canvasSign2 = ref<typeof CanvasSign>()
     const width = ref<number>(document.documentElement.clientWidth || document.body.clientWidth)
     const lineWidth = ref<number>(10)
 
@@ -58,6 +59,7 @@ export default defineComponent({
         lineWidth.value = w / 100
         // 组件参数改变后，通过reset方法使属性生效
         canvasSign.value?.reset()
+        canvasSign2.value?.reset()
       }
     })
 
@@ -65,6 +67,7 @@ export default defineComponent({
       width,
       lineWidth,
       canvasSign,
+      canvasSign2,
       imgSrc,
       saveCallback,
       saveHandle,

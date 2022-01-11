@@ -1,5 +1,9 @@
 # 更新日志
 
+#### 2.0.8 (2022-01-11)
+
+* 增加```reset```方法，组件参数改变后，通过```reset```方法使属性生效（reset方法会清空画布）
+
 #### 2.0.7 (2021-09-17)
 
 * &#x2757;&#x2757; 原```background```改为```backgroundColor```
@@ -29,6 +33,10 @@
 * 升级为vue@3.x版本
 * 基于vite@2.x开发
 * vue@2.x版本请使用 [![vue-canvas-sign@1.0.5](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.5-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.5)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)
+
+#### 1.0.7 (2022-01-11)
+
+* 增加```reset```方法，组件参数改变后，通过```reset```方法使属性生效（reset方法会清空画布）
 
 #### 1.0.6 (2021-09-17)
 
