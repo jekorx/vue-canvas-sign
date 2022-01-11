@@ -87,7 +87,14 @@ export default {
     }
   },
   mounted () {
-    this.$nextTick(this.init)
+    this.$nextTick(() => {
+      const canvas = this.$refs.canvas
+      this.canvas = canvas
+      // 获取canvas context
+      const cxt = canvas.getContext('2d')
+      this.cxt = cxt
+      this.init()
+    })
   },
   methods: {
     // 生成图片
@@ -102,21 +109,28 @@ export default {
     },
     // 清空画布
     clear () {
-      this.cxt.clearRect(0, 0, this.canvas.width, this.canvas.height)
+      const { width, height } = this.canvas || {}
+      this.cxt.clearRect(0, 0, width || 0, height || 0)
       this.cxt.fillStyle = this.backgroundColor
       this.cxt.fillRect(0, 0, this.width, this.height)
     },
+    reset () {
+      const { cxt } = this
+      if (cxt) {
+        const { width, height, borderWidth } = this
+        cxt.canvas.width = width > borderWidth * 2 ? width - borderWidth * 2 : width
+        cxt.canvas.height = height
+        setTimeout(this.init, 0)
+      }
+    },
     // 初始化
     init () {
-      const canvas = this.$refs.canvas
-      this.canvas = canvas
-
-      // 获取canvas context
-      const cxt = canvas.getContext('2d')
+      const { canvas, cxt } = this
+      const { width, height } = canvas || {}
 
       // canvas context相关设置
       cxt.fillStyle = this.backgroundColor
-      cxt.fillRect(0, 0, this.width, this.height)
+      cxt.fillRect(0, 0, width || 0, height || 0)
       cxt.strokeStyle = this.color
       cxt.lineWidth = this.lineWidth
       cxt.lineCap = 'round' // 线条末端添加圆形线帽，减少线条的生硬感
@@ -124,8 +138,6 @@ export default {
       // 利用阴影，消除锯齿
       cxt.shadowBlur = 1
       cxt.shadowColor = this.color
-
-      this.cxt = cxt
     },
     // 移动端触摸摁下
     touchstart (e) {

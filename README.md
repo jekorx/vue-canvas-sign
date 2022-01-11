@@ -16,16 +16,16 @@ npm i vue-canvas-sign -S
 > 使用
 ```javascript
 <template>
-  <div>
+  <div style="position: relative; left: 10px; top: 50px">
     <!-- 使用方法一 -->
-    <CanvasSign ref="canvasSign" :imageQual="0.01" background-color="#EEE" />
+    <CanvasSign ref="canvasSign" :width="width" :line-width="lineWidth" imageType="image/jpeg" :image-qual="0.01" background-color="#EEE" />
     <div>
       <button @click="saveHandle">save</button>
       <button @click="clearHandle">clear</button>
     </div>
     <hr />
     <!-- 使用方法二 -->
-    <CanvasSign>
+    <CanvasSign ref="canvasSign2" :width="width" :line-width="lineWidth">
       <!-- vue@2.6.0 版本及以上，才能使用 v-slot -->
       <!-- <template v-slot="{ save, clear }">
         <button @click="() => save(saveCallback)">save</button>
@@ -51,8 +51,22 @@ export default {
   data () {
     return {
       // 图片src，默认空白base64图片
-      imgSrc: blankimg
+      imgSrc: blankimg,
+      width: (document.documentElement.clientWidth || document.body.clientWidth) / 2,
+      lineWidth: 10
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      window.onresize = () => {
+        const w = document.documentElement.clientWidth || document.body.clientWidth
+        this.width = w / 2
+        this.lineWidth = w / 100
+        // 组件参数改变后，通过reset方法使属性生效
+        this.$refs.canvasSign.reset()
+        this.$refs.canvasSign2.reset()
+      }
+    })
   },
   methods: {
     // slot中save方法回调
@@ -100,3 +114,4 @@ export default {
 | :----- | :---------- | :------- | :----- |
 | save   | 保存图片方法 | Function | callback(imgBase64) |
 | clear  | 清空画布方法 | Function | 无 |
+| reset  | 组件参数改变后，通过reset方法使属性生效（reset方法会清空画布） | Function | 无 |
