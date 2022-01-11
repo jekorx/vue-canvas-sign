@@ -1,13 +1,13 @@
 <template>
   <!-- 使用方法一 -->
-  <CanvasSign ref="canvasSign" imageType="image/png" :imageQual="0.01" background-color="#EEE" />
+  <CanvasSign ref="canvasSign" imageType="image/png" :width="width" :line-width="lineWidth" :image-qual="0.01" background-color="#EEE" />
   <div>
     <button @click="saveHandle">save</button>
     <button @click="clearHandle">clear</button>
   </div>
   <hr />
   <!-- 使用方法二 -->
-  <CanvasSign :height="400">
+  <CanvasSign :height="400" :width="width" :line-width="lineWidth">
     <template v-slot="{ save, clear }">
       <button @click="() => save(saveCallback)">save</button>
       <button @click="() => clearWithSlotHandle(clear)">clear</button>
@@ -18,7 +18,7 @@
   <img :src="imgSrc" alt="生成的图片" />
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import CanvasSign from './canvas-sign'
 
 const blankimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
@@ -27,6 +27,8 @@ export default defineComponent({
   setup () {
     const imgSrc = ref(blankimg)
     const canvasSign = ref<typeof CanvasSign>()
+    const width = ref<number>(document.documentElement.clientWidth || document.body.clientWidth)
+    const lineWidth = ref<number>(10)
 
     // slot中save方法回调
     const saveCallback = (imgBase64?: string) => {
@@ -49,7 +51,19 @@ export default defineComponent({
       imgSrc.value = blankimg // 清空图片
     }
 
+    onMounted(() => {
+      window.onresize = () => {
+        const w = document.documentElement.clientWidth || document.body.clientWidth
+        width.value = w
+        lineWidth.value = w / 100
+        // 组件参数改变后，通过reset方法使属性生效
+        canvasSign.value?.reset()
+      }
+    })
+
     return {
+      width,
+      lineWidth,
       canvasSign,
       imgSrc,
       saveCallback,

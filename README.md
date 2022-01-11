@@ -4,9 +4,9 @@
 
 > ❗ vue canvas签名组件（vue canvas sign component），```2.x```版本为```vue@3.x```组件  
 
-> ❗ 如需在```vue@2.x```中使用，请使用 [![vue-canvas-sign@1.0.6](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.6-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.6)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)  
-> ```yarn add vue-canvas-sign@^1.0.6```  
-> ```npm i vue-canvas-sign@^1.0.6 -S```  
+> ❗ 如需在```vue@2.x```中使用，请使用 [![vue-canvas-sign@1.0.7](https://img.shields.io/badge/npm%20vue--canvas--sign-v1.0.7-blue)](https://www.npmjs.com/package/vue-canvas-sign/v/1.0.7)，Github v1.x地址 [![github 1.x](https://img.shields.io/badge/github%20vue--canvas--sign-1.x-green)](https://github.com/jekorx/vue-canvas-sign/tree/1.x)  
+> ```yarn add vue-canvas-sign@^1.0.7```  
+> ```npm i vue-canvas-sign@^1.0.7 -S```  
 
 ### 示例
 
@@ -28,14 +28,14 @@ npm i vue-canvas-sign -S
 ```javascript
 <template>
   <!-- 使用方法一 -->
-  <CanvasSign ref="canvasSign" :imageQual="0.01" background-color="#EEE" />
+  <CanvasSign ref="canvasSign" imageType="image/png" :width="width" :line-width="lineWidth" :image-qual="0.01" background-color="#EEE" />
   <div>
     <button @click="saveHandle">save</button>
     <button @click="clearHandle">clear</button>
   </div>
   <hr />
   <!-- 使用方法二 -->
-  <CanvasSign>
+  <CanvasSign :height="400" :width="width" :line-width="lineWidth">
     <template v-slot="{ save, clear }">
       <button @click="() => save(saveCallback)">save</button>
       <button @click="() => clearWithSlotHandle(clear)">clear</button>
@@ -46,7 +46,7 @@ npm i vue-canvas-sign -S
   <img :src="imgSrc" alt="生成的图片" />
 </template>
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
 import CanvasSign, { ICanvasSign } from './canvas-sign'
 
 const blankimg = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQYV2NgAAIAAAUAAarVyFEAAAAASUVORK5CYII='
@@ -64,7 +64,7 @@ export default defineComponent({
     }
     // 不使用slot的save方法
     const saveHandle = () => {
-      canvasSign.value?.save(img => {
+      canvasSign.value?.save((img?: string) => {
         imgSrc.value = img || blankimg
       })
     }
@@ -79,7 +79,19 @@ export default defineComponent({
       imgSrc.value = blankimg // 清空图片
     }
 
+    onMounted(() => {
+      window.onresize = () => {
+        const w = document.documentElement.clientWidth || document.body.clientWidth
+        width.value = w
+        lineWidth.value = w / 100
+        // 组件参数改变后，通过reset方法使属性生效
+        canvasSign.value?.reset()
+      }
+    })
+
     return {
+      width,
+      lineWidth,
       canvasSign,
       imgSrc,
       saveCallback,
@@ -121,3 +133,4 @@ app.component('CanvasSign', CanvasSign)
 | :----- | :---------- | :------- | :----- |
 | save   | 保存图片方法，需判断imgBase64是否为空 | Function | callback(imgBase64?: string) |
 | clear  | 清空画布方法 | Function | 无 |
+| reset  | 组件参数改变后，通过reset方法使属性生效 | Function | 无 |

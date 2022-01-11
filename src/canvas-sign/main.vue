@@ -121,16 +121,26 @@ export default defineComponent({
         cxt.value.fillRect(0, 0, width || 0, height || 0)
       }
     }
+    // 属性改变后重置画布
+    const reset = () => {
+      const context = cxt.value
+      if (context) {
+        const { width, height, borderWidth } = props
+        context.canvas.width = width > borderWidth * 2 ? width - borderWidth * 2 : width
+        context.canvas.height = height
+        setTimeout(init, 0)
+      }
+    }
+
     // 初始化
     const init = () => {
-      // 获取canvas context
-      const context = canvas.value?.getContext('2d')
-
+      const context = cxt.value
       if (context) {
-        const { backgroundColor, width, height, color, lineWidth } = props
+        const { backgroundColor, color, lineWidth } = props
+        const { width, height } = canvas.value || {}
         // canvas context相关设置
         context.fillStyle = backgroundColor
-        context.fillRect(0, 0, width, height)
+        context.fillRect(0, 0, width || 0, height || 0)
         context.strokeStyle = color
         context.lineWidth = lineWidth
         context.lineCap = 'round' // 线条末端添加圆形线帽，减少线条的生硬感
@@ -138,8 +148,6 @@ export default defineComponent({
         // 利用阴影，消除锯齿
         context.shadowBlur = 1
         context.shadowColor = color
-
-        cxt.value = context
       }
     }
     // 移动端触摸摁下
@@ -200,13 +208,22 @@ export default defineComponent({
       isDraw.value = false
       cxt.value?.closePath()
     }
-    onMounted(init)
+
+    onMounted(() => {
+      // 获取canvas context
+      const context = canvas.value?.getContext('2d')
+      if (context) {
+        cxt.value = context
+        init()
+      }
+    })
 
     return {
       canvas,
       borderStyle,
       save,
       clear,
+      reset,
       touchstart,
       mousedown,
       touchmove,
